@@ -19,7 +19,7 @@ services:
     container_name: saleor-redis
     restart: always
     ports:
-      - "6380:6379"
+      - "6380:6379" # external 6380, internal 6379
 
   saleor-api:
     build:
@@ -32,23 +32,25 @@ services:
       - redis
     environment:
       DEBUG: "False"
-      SECRET_KEY: "your-super-secret-key"
+      SECRET_KEY: "your-super-secret-key" # generate your own secret in production
       ALLOWED_HOSTS: "*"
       DATABASE_URL: postgres://saleor:saleor@postgres:5432/saleor
       REDIS_URL: redis://redis:6379/0
     ports:
-      - "8000:8000"
+      - "8010:8000" # external 8010, internal 8000
 
   saleor-dashboard:
     image: nginx:alpine
     container_name: saleor-dashboard
+    restart: always
     volumes:
-      - dashboard_data:/usr/share/nginx/html
+      - /root/dashboard_static:/usr/share/nginx/html
     ports:
       - "9000:80"
     depends_on:
       - saleor-api
+    environment:
+      API_URI: http://saleor-api:8000/graphql/
 
 volumes:
   postgres_data:
-  dashboard_data:
