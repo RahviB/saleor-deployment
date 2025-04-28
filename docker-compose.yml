@@ -22,8 +22,11 @@ services:
       - "6379:6379"
 
   saleor-api:
-    image: ghcr.io/saleor/saleor:latest
+    build:
+      context: https://github.com/saleor/saleor.git
+      dockerfile: Dockerfile
     container_name: saleor-api
+    restart: always
     depends_on:
       - postgres
       - redis
@@ -37,8 +40,11 @@ services:
       - "8000:8000"
 
   saleor-dashboard:
-    image: ghcr.io/saleor/dashboard:latest
+    build:
+      context: https://github.com/saleor/dashboard.git
+      dockerfile: Dockerfile
     container_name: saleor-dashboard
+    restart: always
     depends_on:
       - saleor-api
     environment:
