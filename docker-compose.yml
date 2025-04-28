@@ -40,17 +40,15 @@ services:
       - "8000:8000"
 
   saleor-dashboard:
-    build:
-      context: https://github.com/saleor/dashboard.git
-      dockerfile: Dockerfile
+    image: nginx:alpine
     container_name: saleor-dashboard
-    restart: always
-    depends_on:
-      - saleor-api
-    environment:
-      API_URI: http://saleor-api:8000/graphql/
+    volumes:
+      - dashboard_data:/usr/share/nginx/html
     ports:
       - "9000:80"
+    depends_on:
+      - saleor-api
 
 volumes:
   postgres_data:
+  dashboard_data:
