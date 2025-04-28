@@ -34,6 +34,7 @@ services:
       DEBUG: "False"
       SECRET_KEY: "your-super-secret-key" # generate your own secret in production
       ALLOWED_HOSTS: "*"
+      ALLOWED_CLIENT_HOSTS: "localhost,185.158.132.8"
       DATABASE_URL: postgres://saleor:saleor@postgres:5432/saleor
       REDIS_URL: redis://redis:6379/0
     ports:
