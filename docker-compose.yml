@@ -1,30 +1,28 @@
-version: "3.9"
+version: "3.8"
 
 services:
   postgres:
     image: postgres:14
-    container_name: saleor-postgres
+    container_name: postgres
     restart: always
     environment:
       POSTGRES_USER: saleor
       POSTGRES_PASSWORD: saleor
       POSTGRES_DB: saleor
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
   redis:
-    image: redis:6
-    container_name: saleor-redis
+    image: redis:6-alpine
+    container_name: redis
     restart: always
     ports:
-      - "6380:6379"
+      - "6379:6379"
 
   saleor-api:
-    build:
-      context: https://github.com/saleor/saleor.git
-      dockerfile: Dockerfile
+    image: ghcr.io/saleor/saleor:latest
     container_name: saleor-api
     restart: always
     depends_on:
@@ -32,12 +30,13 @@ services:
       - redis
     environment:
       DEBUG: "False"
-      SECRET_KEY: "your-super-secret-key"   # (Change later)
+      SECRET_KEY: "your-super-secret-key"
       ALLOWED_HOSTS: "*"
       ALLOWED_CLIENT_HOSTS: "localhost,185.158.132.8"
       DATABASE_URL: postgres://saleor:saleor@postgres:5432/saleor
       REDIS_URL: redis://redis:6379/0
-      RSA_PRIVATE_KEY: "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCefjk37xCLnUoV\nZig+G44RXBt37k4ZVLI0ZQZ9PpiTonNpGxIwN117rIxAw0Fs7IBIOKhLICamgoV6\n1gkWVdGr3wj2p6cmJr7Qfljp3Zn0wAZV1NMqOATj682StfF2KcTF3XTcFdQRaZJ1\nMlmQbap7QgSfMGPEMPhJgt6YENt76Ioi1Dy/xd5RiE0bznbfP+d8tllQfQpDTXEp\niTmkIf6/ucuQA71Z5XKLfdm99QhtxdAhlqikC4rm26mJ7BgCW3OFLF1LTXRA28Bl\n+H0kb/1veDX95DjeHJcLQPIOpSrYKZjKEd7edh+zVZhBXCdWhSiuHhKxQZjOCsra\nQDEDR1SPAgMBAAECggEAFN0dL3mceMyD/+zP7QZtPWgdw5FkHYiH4Zwk7mAgRLBU\nt1LVd5xqMB7G4xBGW2OHVY/ZHklFXT5UT5cVC317mZTwK0wRlapHDHooE+J/OE1T\nktaZKkxv3whfqj73jMGzLLAviHilJIT8acoZfojj3CWU0dcpuEi7/oKoRmX9sUH2\nLBVs7EbgMYgE9Qm441yBjKU8kd5X2hZpiRURDsiRVk1JpJ4+XcJyJ4NjvOXouWwQ\nZEcEPNWhYwAeW3nXPEMF5PAvUr6s0DBcGXaVPMhCca1sSa4EMSn+Y2uO6qYD8Xgj\nVSWx6L8KRPT3t3TN7SDh847+7zsf01/CbEV7ZsEf8QKBgQDeT7/uhw9kU+FRH7ys\nmDo56gD4Vc/Skljybu4HST9y/jwr3qoh6MSLiI0PLCAOiWMZXVuOthX50dgOUEh6\nxN4H9BoxDAb7CHwXZVgNs7BAHr2vpQPS4R95oEoXMTvQQ2/imBPQrlDmMrPn4D+g\nomGimFLTQnNFTFESaeA1FIrEEQKBgQC2grrb4fuHMslgYQThG96vObGZU5Jdvq+n\nQOQ9Q7nQr8+2eZ8Iw8KyJOBJBoeBHYJB9e/iCJwyov4iwcqBVsOl9K7qmyevcWvS\noUjcvNUblev3mASjhClqjBs/6FkrRs4Iv7uk3O1QXv/S24UQsDo91182AnhwXU2s\ntQDONpSunwKBgHnrttE0FQbq0blR9IGbguNcKGgJd85+IHXkzHoGe9uu/oT4usma\nBKCZpPLbOkF+q3CvuJTN28OEiD9hXD6oVTR7dRnNBM8L2jJijCYHk/O2aEU59Jzk\nhgSIGdoaUDlpoqTczpE16Hw29l+Gpp6ML4uiiln+KYWp0xSMKEA0Id5hAoGAXmML\nig27zDa6qGpkYJrONmaq73Wl+29TXjcUEo8E+OUDkgYh9iFvfjvN9lY3G9IL/FrZ\nXVdAmHts3MLGHM+nTRtWnqPxCS2qKnsYuHe76pFFQH3Q4FPIK38b1JgwDU6H3URz\nIZbT8D3BJeY7Ud8hr7vDVKZAbTQDqK7PJNZbXFcCgYB0lnZo9ryEpBrQ9vlZjLRj\nz5/b8GMQY4zZ/If81DEy8f1PSXeJbzaXYEYyLspaQdSAoj/qTZRyWYJiz9G07fkp\nlhgLMakHTMDedeasWpcqP5HPv3EAwGeXP00e5QA30qPsy/PccY7uzjnHLsd82Zk8\n/ua95Vr5CpbgkvKXexY/oQ==\n-----END PRIVATE KEY-----\n"
+      RSA_PRIVATE_KEY: "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCefjk37xCLnUoV\nZig+G44RXBt37k4ZVLI0ZQZ9PpiTonNpGxIwN117rIxAw0Fs7IBIOKhLICamgoV6\n1gkWVdGr3wj2p6cmJr7Qfljp3Zn0wAZV1NMqOATj682StfF2KcTF3XTcFdQRaZJ1\nMlmQbap7QgSfMGPEMPhJgt6YENt76Ioi1Dy/xd5RiE0bznbfP+d8tllQfQpDTXEp\niTmkIf6/ucuQA71Z5XKLfdm99QhtxdAhlqikC4rm26mJ7BgCW3OFLF1LTXRA28Bl\n+H0kb/1veDX95DjeHJcLQPIOpSrYKZjKEd7edh+zVZhBXCdWhSiuHhKxQZjOCsra\nQDEDR1SPAgMBAAECggEAFN0dL3mceMyD/+zP7QZtPWgdw5FkHYiH4Zwk7mAgRLBU\nt1LVd5xqMB7G4xBGW2OHVY/ZHklFXT5UT5cVC317mZTwK0wRlapHDHooE+J/OE1T\nktaZKkxv3whfqj73jMGzLLAviHilJIT8acoZfojj3CWU0dcpuEi7/oKoRmX9sUH2\nLBVs7EbgMYgE9Qm441yBjKU8kd5X2hZpiRURDsiRVk1JpJ4+XcJyJ4NjvOXouWwQ\nZEcEPNWhYwAeW3nXPEMF5PAvUr6s0DBcGXaVPMhCca1sSa4EMSn+Y2uO6qYD8Xgj\nVSWx6L8KRPT3t3TN7SDh847+7zsf01/CbEV7ZsEf8QKBgQDeT7/uhw9kU+FRH7ys\nmDo56gD4Vc/Skljybu4HST9y/jwr3qoh6MSLiI0PLCAOiWMZXVuOthX50dgOUEh6\nxN4H9BoxDAb7CHwXZVgNs7BAHr2vpQPS4R95oEoXMTvQQ2/imBPQrlDmMrPn4D+g\nomGimFLTQnNFTFESaeA1FIrEEQKBgQC2grrb4fuHMslgYQThG96vObGZU5Jdvq+n\nQOQ9Q7nQr8+2eZ8Iw8KyJOBJBoeBHYJB9e/iCJwyov4iwcqBVsOl9K7qmyevcWvS\noUjcvNUblev3mASjhClqjBs/6FkrRs4Iv7uk3O1QXv/S24UQsDo91182AnhwXU2s\ntQDONpSunwKBgHnrttE0FQbq0blR9IGbguNcKGgJd85+IHXkzHoGe9uu/oT4usma\nBKCZpPLbOkF+q3CvuJTN28OEiD9hXD6oVTR7dRnNBM8L2jJijCYHk/O2aEU59Jzk\nhgSIGdoaUDlpoqTczpE16Hw29l+Gpp6ML4uiiln+KYWp0xSMKEA0Id5hAoGAXmML\nig27zDa6qGpkYJrONmaq73Wl+29TXjcUEo8E+OUDkgYh9iFvfjvN9lY3G9IL/FrZ\nXVdAmHts3MLGHM+nTRtWnqPxCS2qKnsYuHe76pFFQH3Q4FPIK38b1JgwDU6H3URz\nIZbT8D3BJeY7Ud8hr7vDVKZAbTQDqK7PJNZbXFcCgYB0lnZo9ryEpBrQ9vlZjLRj\nz5/b8GMQY4zZ/If81DEy8f1PSXeJbzaXYEYyLspaQdSAoj/qTZRyWYJiz9G07fkp\nlhgLMakHTMDedeasWpcqP5HPv3EAwGeXP00e5QA30qPsy/PccY7uzjnHLsd82Zk8\n/ua95Vr5CpbgkvKXexY/oQ==\n-----END PRIVATE KEY-----"
+      HOST: 0.0.0.0
     ports:
       - "8010:8000"
 
@@ -45,12 +44,10 @@ services:
     image: nginx:alpine
     container_name: saleor-dashboard
     restart: always
-    depends_on:
-      - saleor-api
     ports:
       - "9000:80"
     volumes:
-      - /root/dashboard_static:/usr/share/nginx/html
+      - ./dashboard_static:/usr/share/nginx/html:ro
 
 volumes:
   postgres_data:
