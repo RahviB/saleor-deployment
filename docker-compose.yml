@@ -37,6 +37,8 @@ services:
       ALLOWED_CLIENT_HOSTS: "localhost,185.158.132.8"
       DATABASE_URL: postgres://saleor:saleor@postgres:5432/saleor
       REDIS_URL: redis://redis:6379/0
+      RSA_PRIVATE_KEY: "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCefjk37xCLnUoV\nZig+G44RXBt37k4ZVLI0ZQZ9PpiTonNpGxIwN117rIxAw0Fs7IBIOKhLICamgoV6\n1gkWVdGr3wj2p6cmJr7Qfljp3Zn0wAZV1NMqOATj682StfF2KcTF3XTcFdQRaZJ1\nMlmQbap7QgSfMGPEMPhJgt6YENt76Ioi1Dy/xd5RiE0bznbfP+d8tllQfQpDTXEp\niTmkIf6/
+
     ports:
       - "8010:8000" # external 8010, internal 8000
 
